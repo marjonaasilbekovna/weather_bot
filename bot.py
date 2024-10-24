@@ -10,8 +10,8 @@ from inline_button import menu, menu_country, sozlama
 from state import Vaqt
 import time
 
-TOKEN = "7270059308:AAFSm22a8TtM75alFQBQSAXMBxgwIDikIK4"
-ADMIN_ID = [5012784380]
+TOKEN = ""
+ADMIN_ID = []
 
 dp = Dispatcher()
 
