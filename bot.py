@@ -2,16 +2,16 @@ import asyncio
 import logging
 import sys
 from aiogram import Bot, Dispatcher, F
-from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 from weather import weather
-from inline_button import menu, menu_country
-from state import Shahar
+from inline_button import menu, menu_country, sozlama
+from state import Vaqt
+import time
 
-TOKEN = "7181305178:AAEVp764bS7csy8A7lcAXUrNkj7Z9x--2hE"
-ADMIN_ID = [7241341727]
+TOKEN = "7270059308:AAFSm22a8TtM75alFQBQSAXMBxgwIDikIK4"
+ADMIN_ID = [5012784380]
 
 dp = Dispatcher()
 
@@ -22,21 +22,38 @@ async def command_start_handler(message: Message, state:FSMContext):
     
     await message.answer(text)
     await message.answer("Ob-havo malumotlarini olish uchun siz yashaydigan shahar yoki tuman nomini tugmalardan tanlang", reply_markup=menu)
-    await state.set_state(Shahar.shahar1)
 
 # foydalanuvchi tanlagan shahar haqida malumot chiqarish
-@dp.callback_query(lambda callback_query: callback_query.data in menu_country.keys(), Shahar.shahar1)
+@dp.callback_query(lambda callback_query: callback_query.data in menu_country.keys())
 async def weather_info(callback_query: CallbackQuery, state:FSMContext):
     selected_city = callback_query.data
-    await state.update_data(city1 = shahar1)
     ob_havo_info = weather(selected_city)
     
-    await callback_query.message.answer(f"{menu_country[selected_city]} shahridagi ob-havo ma'lumotlari:\n\n{ob_havo_info}")
-    await callback_query.message.answer("Yana birorta shahar ob-havosi haqida malumot olmoqchimisiz?")
-    await callback_query.answer() 
-    state.message.delete()
+    await callback_query.message.answer(f"{menu_country[selected_city]} shahridagi ob-havo ma'lumotlari:\n\n{ob_havo_info}", reply_markup=sozlama)
+    
+    await callback_query.message.delete()
 
+@dp.callback_query(F.data=="change")
+async def change_code(callback_query:CallbackQuery):
+    await callback_query.message.answer("Shaqxar dan birini tanlang", reply_markup=menu)
+    
+@dp.message(F.text=="Add")
+async def add_timer(message: Message, state:FSMContext):
+    await message.answer("Vaqtni kiriting !")
+    await state.set_state(Vaqt.vaqt)
 
+@dp.message(Vaqt.vaqt)
+async def timer(message: Message, state:FSMContext):
+    text = message.text
+
+    while True:
+        if time.strftime('%Y-%m-%d %H:%M:%S') == text:
+            await message.answer("Its time")
+            # break
+        else:
+            continue
+    
+    await state.clear()
 
 @dp.startup()
 async def bot_start():

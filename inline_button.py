@@ -12,7 +12,7 @@ menu_country = {
     "andijan": "Andijan",
     "zarafshan": "Zarafshan",
     "urgench": "Urgench",
-    "khiva": "Khiva",
+    "khiva": "Xiva",
     "sirdaryo": "Sirdaryo",
     "nukus": "Nukus",
     "termiz": "Termiz"
@@ -51,27 +51,10 @@ menu = InlineKeyboardMarkup(
     ]
 )
 
-surov = {
-    "ha": "Ha ✅",
-    "yoq": "Yo'q ❌"
-}
-surov_inline = InlineKeyboardMarkup(
+sozlama = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text="Ha ✅", callback_data="ha"), 
-            InlineKeyboardButton(text="Yo'q ❌", callback_data="yoq")
-        ]
-    ]
-)
-
-qayta = {
-    "start": "Start"
-}
-
-qayta_inline = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [
-            InlineKeyboardButton(text="Start", callback_data="start")
+            InlineKeyboardButton(text="O'zgartirish", callback_data="change"), 
         ]
     ]
 )
